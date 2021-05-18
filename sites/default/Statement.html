@@ -1,0 +1,540 @@
+<style>
+*{margin:0px; padding:0px;}
+@page {
+     margin-top: 70px !important;
+	 /*margin-bottom:40px;*/
+	 margin-left:30px;
+	 margin-right:30px; 
+	
+	
+    }
+	
+.wrapper{
+			width:100%;
+			
+			//border:1px solid #CCC;
+			text-align:center; 
+			
+			color:#383838; 
+			font-size:10px; 
+			line-height:15px;
+			font-family:calibri;
+			
+			
+}
+
+
+/*.container{width:1010px; margin:10px 5px; text-align:left;}*/
+.container{  
+	text-align:left;
+	font-size:10px; 
+	font-family: calibri;
+
+}
+
+
+table{
+		/*margin:10px 0px 0px 0px;*/
+		font-size:10px;
+		font-family: calibri;
+}
+		
+		
+td{padding:2px;}
+
+table.border td{border:1px solid #d3d3d3;}	
+
+
+table.payment_table{
+	float: right;
+    font-size: 10px;
+    width: 700px;
+	
+	/*border:1px solid #d3d3d3;*/
+	
+
+}
+table.payment_table	td{border:1px solid #d3d3d3;}	
+	
+.glmessage{
+
+	    margin-left: 0px;
+		
+	font-weight:bold;
+	text-align: left;
+	
+}
+
+table.linetable td{
+	border:1px solid #d3d3d3;
+}
+
+.linetable{
+	height:460px;
+	font-family: calibri;	
+}
+
+.bill_detail{
+	float: left;
+	width: 372px;	
+	text-align:left;
+	
+	/*margin-top: 60px;*/
+		
+}
+	
+	
+.bill_data{
+	margin-left:0px; 
+	//margin-top:90px; 
+}
+
+#address{ 
+font-family: calibri;
+    font-size: 14px;
+}
+
+
+#address td{
+padding-left:0px;
+margin-left:0px;
+}
+
+#letter{ text-align:left;}
+
+#number{ text-align:right;}
+
+.style_card,
+.style_cash,
+.style_cheque,
+.style_master,
+.style_visa,
+.style_discover,
+.style_american,
+.style_other,
+.payment_style,
+.grand_style,
+.check_style,
+.total_style,
+.subtotal_style,
+.last_payment_style {
+
+	display:none;
+}
+.watermark{
+	color:#d3d3d3;
+}
+
+/*.pagebreak1
+{
+                background:#fff;
+                position:absolute;
+                font-size:15px;
+                font-weight:bold;
+                top:33.33%;
+                left:0;
+                width:7%;
+                border-bottom:1px  dotted ;
+}
+.pagebreak2
+{
+                background:#fff;
+                position:absolute;
+                font-size:15px;
+                font-weight:bold;
+                top:33.33%;
+                right:0;
+                width:7%;
+                border-bottom:1px dotted ;
+}
+.pagebreak3
+{
+                background:#fff;
+                position:absolute;
+                font-size:15px;
+                font-weight:bold;
+                top:66.66%;
+                left:0;
+                width:7%;
+                border-bottom:1px dotted ;
+}
+.pagebreak4
+{
+                background:#fff;
+                position:absolute;
+                font-size:15px;
+                font-weight:bold;
+                top:66.66%;
+                right:0;
+                width:7%;
+                border-bottom:1px  dotted;
+}*/
+/*--------------Custom CSS---------------------------*/
+.bill_data ul
+{
+	margin:0px 0px 37px 0px;
+}
+.bill_data ul li{list-style-type:none;}
+
+.bill_data ul.noBottom li{list-style-type:none;}
+.bill_data ul.noBottom
+{
+	margin:0px 0px 0px 0px;
+}
+/*.payment{margin:1px 0px 0px 0px;}*/
+#address td.content2{padding:48px 0px 0px 45px;
+font-weight:bold;}
+#address td.content1{padding:48px 0px 0px 45px;font-weight:bold;}
+/*--------------End Custom CSS---------------------------*/
+</style>
+
+<div id="wrapper" class="wrapper">
+  <div id="container" class="container">
+  	
+
+    		<div class="bill_detail" >
+               <div class="bill_data"  >
+              <ul>
+               <!-- code chenged for BUG ID 11248----->
+              <li style="font-weight:bold"><b style="background-color:#D5E6F0">Pay To :</b> [billing_name],</li>
+               	     <li style="font-weight:bold">[billing_address],</li>
+                    <li style="font-weight:bold"> [billing_csz],</li>
+                    <li style="font-weight:bold"> [billing_phone]</li>
+                 </ul> 
+                 
+                  <ul class="noBottom">                           
+                     <li>Patient Name: [patient_name]</li>
+                     
+                   <li>  Acct Number: [account_no]</li>
+                </ul>
+                 </div>
+                        
+   			 	 </div>   
+
+				<div class="payment">
+                
+                	<div style="border:1px solid #d3d3d3;">
+                    <table border="0" cellpadding="0" cellspacing="0" class="payment_table" width="100%">
+                    
+                    	
+                    	<tr>
+                        	<div [style_card] class="style_card"><td width="17%"><input name="" type="checkbox" value=""> Card</td></div>
+                        	<div [style_cash] class="style_cash"><td width="17%"><input name="" type="checkbox" value="" > Cash</td></div>
+                             <div [style_cheque] class="style_cheque"><td width="17%"><input name="" type="checkbox" value=""> Check</td></div>
+                            <td colspan="" width="27%">Date :</td>
+                             <div [check_style] class="check_style"><td colspan="" width="27%" class="watermark">Check No</td></div>
+                           
+                        </tr>
+                        
+                        <tr><div [payment_style] class="payment_style"><td colspan="5" style="font-size:8px"><strong>IF PAYING BY CREDIT CARD, FILL OUT BELOW</strong></td></div></tr>
+                        
+                        <tr >
+                        	<div [payment_style] class="payment_style">
+                        	<div [style_master] class="style_master"><td ><input name="" type="checkbox" value="" /> MC</td></div>
+                            <div [style_visa] class="style_visa"><td ><input name="" type="checkbox" value="" /> Visa</td></div>
+                            <div [style_discover] class="style_discover"><td ><input name="" type="checkbox" value="" /> Discover</td></div>
+                            <div [style_american] class="style_american"><td ><input name="" type="checkbox" value="" /> Amex</td></div>
+                            <div [style_other] class="style_other"><td class="watermark"> <input name="" type="checkbox" value="" /> Other</td></div>
+                            </div>
+                        </tr>
+                        
+                        <tr><div [payment_style] class="payment_style"><td colspan="5">Card Number</td></div></tr>
+                       
+                        
+                        <tr>
+                        	<div [payment_style] class="payment_style">
+                            <td colspan="1" class="watermark">CSV Code</td>
+                            
+                            <td colspan="2" class="watermark">Exp. Date : &nbsp; MM &nbsp;/  &nbsp; YY &nbsp;   </td>
+                            </div>
+                            
+                            <td colspan="2" valign="middle">Amount Paid</td>
+                        </tr>
+                        
+                        <tr>
+                        	<td colspan="1">[statement_date]</td>
+                            <td colspan="1">ACCT [account_no]</td>
+                            <td colspan="3" class="watermark">Authorized Signature</td>
+                            
+                        </tr>
+                        
+                        
+                       
+                   </table>
+                   </div>
+          			</div>
+         	 </div><!-- end of div bii_details-->
+         
+         <div class="middle" > 
+        <table border="0" width="100%" >
+    		<tr>
+                <td width="50%" >
+                        <table cellpadding="0" cellspacing="0" class="border" width="60%" id="address" style="margin-left: -7px; float:left;" >
+                            <tr>
+                                <td align="center" bgcolor="#edf0f0" width="500px" >
+                                <strong>Responsible Party Name</strong></td>
+                                
+                            </tr>
+                           
+                            <tr>
+                                <td class="content1">[guardians_name],<br>
+                                [guardian_addr],<br>
+                                [guardian_csz].<br>
+                              <!--  [guardian_phone].--><br /><br />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="50%" valign="top">
+                        <table cellpadding="0" cellspacing="0" class="border" 
+                        width="60%" id="address" style="margin-right: -7px; float:right">
+                            <tr>
+                                <td align="center" bgcolor="#edf0f0" width="500px">
+                                <strong>Practice Address</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="content2">[practice_name],<br>
+                                [practice_address],<br>
+                                [practice_csz],<br>
+                                [practice_phone].</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-size:14px;">
+                    <br />
+                  
+                   
+                    <input name="" type="checkbox" value="">
+                    Please check the box if your address is incorrect or
+                    insurance info has changed</td>
+                </tr>
+                
+                <tr>
+                    <td align=""  colspan="2" style="padding-top: 10px; font-size:14px;"><br />
+                    <strong>------------------------------------------------------------Please detach and send above with payment---------------------------------------------------------------------</strong></td>
+                </tr>
+               
+      	</table>
+     
+        
+        
+        </div> <!-- end of middle div -->
+        
+          
+        
+        
+         <div class="glmessage" > <br />Dear Patient,<br />
+			<p style="margin-left:60px">[gl_message1]</p>
+      	</div>
+        
+         <div class="linetable" >    
+       <table cellpadding="0" cellspacing="0" 
+                        width="100%" class="border">
+          <tr>
+              <td align="center" bgcolor="#D5E6F0" colspan="10">
+              <strong>Statement</strong></td>
+          </tr>
+          <tr align="center">
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Date Of Service</strong></td>
+              <td bgcolor="#edf0f0" align="center" width="15%"><strong>Provider</strong></td>
+              <td bgcolor="#edf0f0" align="center" width="15%"><strong>Location</strong></td>
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Procedure</strong></td>
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Charge</strong></td>
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Primary Insurance Paymen</strong>t</td>
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Secondary Insurance Payment</strong></td>
+              <!--<td bgcolor="#edf0f0"><strong>Adjustment</strong></td>-->
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Patient Payment</strong></td>
+              <td bgcolor="#edf0f0" align="center" width="8%"><strong>Open Balance</strong></td>
+               <td bgcolor="#edf0f0" align="center"><strong>Remark</strong></td>
+          </tr>
+          <tr class="tr0" >
+            <div [style0]>
+              <td id="number">[dos0]</td>
+              <td id="letter">[provider0]</td>
+              <td id="letter">[location0]</td>
+              <td id="number">[procedure0]</td>
+              <td id="number">[Charge0]</td>
+              <td id="number">[PriPaid0]</td>
+              <td id="number">[SecPaid0]</td>
+              <td id="number">[PtPaid0]</td>
+              <td id="number">[balane0]</td>
+              <td id="letter">[remark0]</td>
+             </div>
+          </tr>
+           
+           <tr class="tr1" >
+            <div [style1]>
+              <td id="number">[dos1]</td>
+              <td id="letter">[provider1]</td>
+              <td id="letter">[location1]</td>
+              <td id="number">[procedure1]</td>
+              <td id="number">[Charge1]</td>
+              <td id="number">[PriPaid1]</td>
+              <td id="number">[SecPaid1]</td>
+              <td id="number">[PtPaid1]</td>
+              <td id="number">[balane1]</td>
+              <td id="letter">[remark1]</td>
+           </div>
+           </tr>
+           
+           <tr class="tr2">
+           <div [style2]>
+              <td id="number">[dos2]</td>
+              <td id="letter">[provider2]</td>
+              <td id="letter">[location2]</td>
+              <td id="number">[procedure2]</td>
+              <td id="number">[Charge2]</td>
+              <td id="number">[PriPaid2]</td>
+              <td id="number">[SecPaid2]</td>
+              <td id="number">[PtPaid2]</td>
+              <td id="number">[balane2]</td>
+              <td id="letter">[remark2]</td>
+          </div>
+          </tr>
+           
+            <tr class="tr3" >
+              <div [style3]>
+              <td id="number">[dos3]</td>
+              <td id="letter">[provider3]</td>
+              <td id="letter">[location3]</td>
+              <td id="number">[procedure3]</td>
+              <td id="number">[Charge3]</td>
+              <td id="number">[PriPaid3]</td>
+              <td id="number">[SecPaid3]</td>
+              <td id="number">[PtPaid3]</td>
+              <td id="number">[balane3]</td>
+              <td id="letter">[remark3]</td>
+              </div>
+          </tr>
+          
+           <tr class="tr4" >
+           <div [style4]>
+              <td id="number">[dos4]</td>
+              <td id="letter">[provider4]</td>
+              <td id="letter">[location4]</td>
+              <td id="number">[procedure4]</td>
+              <td id="number">[Charge4]</td>
+              <td id="number">[PriPaid4]</td>
+              <td id="number">[SecPaid4]</td>
+              <td id="number">[PtPaid4]</td>
+              <td id="number">[balane4]</td>
+              <td id="letter">[remark4]</td>
+             </div> 
+          </tr>
+          
+           <tr class="tr5" >
+           <div [style5]>
+              <td id="number">[dos5]</td>
+              <td id="letter">[provider5]</td>
+              <td id="letter">[location5]</td>
+              <td id="number">[procedure5]</td>
+              <td id="number">[Charge5]</td>
+              <td id="number">[PriPaid5]</td>
+              <td id="number">[SecPaid5]</td>
+              <td id="number">[PtPaid5]</td>
+              <td id="number">[balane5]</td>
+              <td id="letter">[remark5]</td>
+              </div>
+          </tr>
+          
+           <tr class="tr5" >
+         
+         	 <div [subtotal_style] class="subtotal_style">
+          			<td colspan="7" style="border:none"></td>
+                	<td   align="right"><strong>Sub Total</strong></td>
+           			<td  align="right"><strong>[line_total]</strong></td>
+                    <td style="border:none"></td>
+              </div>
+             
+          </tr>
+          
+          <tr  >
+           <div [grand_style] class="grand_style">
+          	<td colspan="7" style="border:none"></td>
+              <td   align="right"><strong>Grand Total</strong></td>
+              <td  align="right"><strong>[grand_total]</strong></td>
+            <td style="border:none"></td>
+            </div>
+          </tr>
+          
+         <!-- <tr class="tr6" >
+           <div [style6]>
+              <td>[dos6]</td>
+              <td>[provider6]</td>
+              <td>[location6]</td>
+              <td>[procedure6]</td>
+              <td>[Charge6]</td>
+              <td>[PriPaid6]</td>
+              <td>[SecPaid6]</td>
+              <td>[PtPaid6]</td>
+              <td>[balane6]</td>
+              <td>[remark6]</td>
+              </div>
+          </tr>
+          
+           <tr class="tr7" >
+           <div [style7]>
+              <td>[dos7]</td>
+              <td>[provider7]</td>
+              <td>[location7]</td>
+              <td>[procedure7]</td>
+              <td>[Charge7]</td>
+              <td>[PriPaid7]</td>
+              <td>[SecPaid7]</td>
+              <td>[PtPaid7]</td>
+              <td>[balane7]</td>
+              <td>[remark7]</td>
+              </div>
+          </tr> -->
+          
+         
+           
+           
+      </table>
+       </div><!-- end of div linediv--->
+         
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size:10px; font-family:calibri;">
+          <tr>
+            <td width="80%" bgcolor="#D5E6F0" >
+           <div [last_patient_payment_style] class="last_payment_style"> <strong>LAST PATIENT PAYMENT</strong>&nbsp;$[last_patient_payment] [last_patient_payment_date] </div>*NOTE: Some or all of this payment may be applied to a closed visit that does not appear on this statement
+
+            </td>
+            <td width="15%" align="center" bgcolor="#D5E6F0"><div [total_style] class="total_style"><strong> [total_due]</strong></div></td>
+          </tr>
+          <tr>
+            <td colspan="2"><strong>EXPLANATION OF BALANCES:</strong> [general_reason]</td>
+          </tr>
+          
+           <tr>
+            <td  bgcolor="#D5E6F0" colspan="2"><strong>ADDITIONAL REMARK :</strong>
+           	[gl_message2]
+
+            </td>
+            
+          </tr>
+          
+    </table>
+ 
+ <table class="border" cellpadding="0" cellspacing="0" width="100%">
+ 	<tr>
+    	<td bgcolor="#D5E6F0">
+        	<strong>Balance is due upon receipt. Please call [billing_phone] for billing inquiries and payment options.</strong>
+        </td>
+    </tr>
+ </table>
+            
+         
+    </div><!-- end of div container--->
+</div><!-- end of div wrapper--->
+<!--<div class="pagebreak1"></div>
+<div class="pagebreak2"></div>
+<div class="pagebreak3"></div>
+<div class="pagebreak4"></div>-->
+
+
+		
+		
+	

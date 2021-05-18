@@ -1,0 +1,45 @@
+<a href="controller.php?practice_settings&{$TOP_ACTION}insurance_company&action=edit" onclick="top.restoreSession()"
+   class="btn btn-default btn-add">
+    {xl t='Add a Company'|escape:'html'}</a>
+    <br><br>
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>{xl t='Name'|escape:'html'}</th>
+            <th>{xl t='City, State'|escape:'html'}</th>
+		<!-- Sai custom code start -->
+            <th>{xl t='Default X12 Partner'|escape:'html'}</th>
+			<th>{xl t='Statement Limit'|escape:'html'}</th>
+            <th>{xl t='Deactivated'|escape:'html'}</th>
+      	<!-- Sai custom code end -->
+        </tr>
+    </thead>
+    <tbody>
+        {foreach from=$icompanies item=insurancecompany}
+   		{if $insurancecompany->active eq '1'}
+    	  <tr height="22" style="background-color:#99FFFF">
+       {else}
+    	<tr height="22" style="background-color:#FFCCCC">
+		{/if}
+            <td>
+                <a href="{$CURRENT_ACTION}action=edit&id={$insurancecompany->id|escape:'html'}" onclick="top.restoreSession()">
+                    {$insurancecompany->name|escape:'html'}
+                </a>
+            </td>
+            <td>{$insurancecompany->address->city|escape:'html'} {$insurancecompany->address->state|upper|escape:'html'}&nbsp;</td>
+            <td>{$insurancecompany->get_x12_default_partner_name()|escape:'html'}&nbsp;</td>
+			 {if $insurancecompany->statement_limit < 1}
+        		<td>0</td>
+         		{else}
+          	 <td>{$insurancecompany->statement_limit|escape:'html'}&nbsp;</td>
+          {/if}
+        <!--*************code updated by PAWAN BUG ID:8301 start****-->
+            <td>{if $insurancecompany->get_inactive() eq 1}{xl t='Yes'|escape:'html'}{/if}&nbsp;</td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="4">{xl t='No Insurance Companies Found'|escape:'html'}</td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>
