@@ -76,8 +76,13 @@ if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] !
 
     $insert_id = $facilityService->insert($newFacility);
 
-   
-          
+    //Conditions added by Gangeya for TFS payEHR 980
+    if($_POST["service_location"] == 1 && $_POST["billing_location"] == 1){
+      $sql  = " UPDATE facility SET";
+      $sql .= " defaultBillingFacility='" . $insert_id . "'";
+      $sql .= " WHERE id='" . $insert_id . "'";
+      sqlStatement($sql);
+    }
 
     exit(); // sjp 12/20/17 for ajax save
 }
