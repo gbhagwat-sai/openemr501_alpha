@@ -118,7 +118,6 @@ function submitform() {
     <?php } ?>
 //Custom Code change by Mahesh
 	 if (document.forms[0].facility.value.length>0 && document.forms[0].ncolor.value != '') {
-        alert("Submit");
 		let post_url = $("#facility-add").attr("action");
 		let request_method = $("#facility-add").attr("method");
 		let form_data = $("#facility-add").serialize();

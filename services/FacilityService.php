@@ -158,8 +158,10 @@ class FacilityService
 
     public function update($data)
     {
-       print_r($data);
-
+        //Conditions added by Gangeya for TFS payEHR 980
+        if($data["service_location"] == 1 && $data["billing_location"] == 1){
+            $data["defaultBillingFacility"] = $data["fid"];
+        }
         $sql  = " UPDATE facility SET";
         $sql .= "     name='" . add_escape_custom($data["name"]) . "',";
         $sql .= "     phone='" . add_escape_custom($data["phone"]) . "',";
