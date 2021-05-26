@@ -2100,16 +2100,17 @@ function get_patient_balance($pid, $with_insurance = false, $eid = false)
             }
         } else {
             // Including insurance or not out to insurance, everything is due.
+            //added by gangeya for TFS 1079 writeoff in balance calculation to get correct balance
             $brow = sqlQuery("SELECT SUM(fee) AS amount FROM billing WHERE " .
             "pid = ? AND encounter = ? AND " .
             "activity = 1", array($pid, $encounter));
             $drow = sqlQuery("SELECT SUM(pay_amount) AS payments, " .
-              "SUM(adj_amount) AS adjustments FROM ar_activity WHERE " .
+              "SUM(adj_amount) AS adjustments, SUM(w_o) AS writeoff FROM ar_activity WHERE " .
               "pid = ? AND encounter = ?", array($pid, $encounter));
             $srow = sqlQuery("SELECT SUM(fee) AS amount FROM drug_sales WHERE " .
               "pid = ? AND encounter = ?", array($pid, $encounter));
             $balance += $brow['amount'] + $srow['amount']
-              - $drow['payments'] - $drow['adjustments'];
+              - $drow['payments'] - $drow['adjustments'] - $drow['writeoff'];
         }
     }
 
