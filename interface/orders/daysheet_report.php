@@ -44,7 +44,9 @@ function thisLineItem($row) {
 		echo '"' . addslashes($row['ServicingProvider' ]) . '",';
 		echo '"' . addslashes($row['SupervisingProvider' ]) . '",';
 		echo '"' . addslashes($row['ServiceLocation' ]) . '",';
+		echo '"' . addslashes($row['ServiceLocationState' ]) . '",';
 		echo '"' . addslashes($row['BillingLocation' ]) . '",';
+		echo '"' . addslashes($row['BillingLocationState' ]) . '",';
 		echo '"' . addslashes($row['Encounter' ]) . '",';
 		echo '"' . addslashes(oeFormatShortDate($row['DOS'  ])) . '",';
 		echo '"' . addslashes($row['BatchNo' ]) . '",';
@@ -86,7 +88,9 @@ function thisLineItem($row) {
   	<td class="detail"><?php echo $row['ServicingProvider' ]; ?></td>
   	<td class="detail"><?php echo $row['SupervisingProvider' ]; ?></td>
   	<td class="detail"><?php echo $row['ServiceLocation' ]; ?></td>
+  	<td class="detail"><?php echo $row['ServiceLocationState' ]; ?></td>
   	<td class="detail"><?php echo $row['BillingLocation' ]; ?></td>
+  	<td class="detail"><?php echo $row['BillingLocationState' ]; ?></td>
   	<td class="detail"><?php echo $row['Encounter' ]; ?></td>
   	<td class="detail"><?php echo oeFormatShortDate($row['DOS'  ]); ?></td>
   	<td class="detail"><?php echo $row['BatchNo' ]; ?></td>
@@ -161,7 +165,9 @@ if ($_POST['form_csvexport']) {
   	echo '"' . xl('Servicing Provider') . '",';
   	echo '"' . xl('Supervising Provider') . '",';
   	echo '"' . xl('Service Location') . '",';
+  	echo '"' . xl('Service Location State') . '",';
   	echo '"' . xl('Billing Location') . '",';
+  	echo '"' . xl('Billing Location State') . '",';
   	echo '"' . xl('Encounter ID') . '",';
   	echo '"' . xl('DOS') . '",';
   	echo '"' . xl('Batch No') . '",';
@@ -410,7 +416,9 @@ else { // not export
         <td class="dehead"><?php xl('ServicingProvider','e'  ) ?></td>
         <td class="dehead"><?php xl('SupervisingProvider','e'  ) ?></td>
         <td class="dehead"><?php xl('ServiceLocation','e'  ) ?></td>
+        <td class="dehead"><?php xl('ServiceLocationState','e'  ) ?></td>
         <td class="dehead"><?php xl('BillingLocation','e'  ) ?></td>
+        <td class="dehead"><?php xl('BillingLocationState','e'  ) ?></td>
         <td class="dehead"><?php xl('Encounter','e'  ) ?></td>
         <td class="dehead"><?php xl('DOS','e'  ) ?></td>
         <td class="dehead"><?php xl('BatchNo','e'  ) ?></td>
@@ -458,8 +466,8 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
 	//Updated By Gangeya : BUG ID : 10775, 10894, 10898, 10902
 	if($form_claim_status == "Saved"){
 		$query ="select date(fe.created_date) as CreatedDate,
-		concat(fe.facility, ', ', f.state) AS ServiceLocation,
-		concat(fb.name, ', ', fb.state) AS BillingLocation, fe.Encounter, DATE(fe.date) AS DOS,
+		fe.facility AS ServiceLocation, f.state as ServiceLocationState,
+		fb.name AS BillingLocation, fb.state AS BillingLocationState, fe.Encounter, DATE(fe.date) AS DOS,
 		fe.batch_id as BatchNo, pd.pubpid as ExternalID, Concat(pd.lname, ' ', pd.fname, ' ', pd.mname) AS PatientName, 
 		Date(pd.DOB) AS DOB, u.renderingProvider AS RenderingProvider, u.referringProvider AS ReferringProvider,
 		u.servicingProvider AS ServicingProvider, u.supervisingProvider AS SupervisingProvider,
@@ -490,8 +498,8 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
 	}
 	else{
 		$query ="select date(fe.created_date) as CreatedDate,
-			concat(fe.facility, ', ', f.state) AS ServiceLocation,
-			concat(fb.name, ', ', fb.state) AS BillingLocation, fe.Encounter, DATE(fe.date) AS DOS, 
+			fe.facility AS ServiceLocation, f.state as ServiceLocationState,
+			fb.name AS BillingLocation, fb.state AS BillingLocationState, fe.Encounter, DATE(fe.date) AS DOS, 
 			fe.batch_id as BatchNo, pd.pubpid as ExternalID, Concat(pd.lname, ' ', pd.fname, ' ', pd.mname) AS PatientName, Date(pd.DOB) AS DOB,
 			u.renderingProvider AS RenderingProvider, u.referringProvider AS ReferringProvider,
 			u.servicingProvider AS ServicingProvider, u.supervisingProvider AS SupervisingProvider,
@@ -576,11 +584,10 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
 	else
 		$query .= "group by fe.id order by fe.created_date desc";
 
-			
 	//echo $query;
 
 	$res = sqlStatement($query);
-	
+
 	while ($row = sqlFetchArray($res)) 
 	{
 		thisLineItem($row);
