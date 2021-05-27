@@ -1106,24 +1106,46 @@ $progressNoteRow = sqlFetchArray($progressNoteResult);
 
 //print_r($progressNoteRow);
 
- if(isset($progressNoteRow) && !empty($progressNoteRow)){
-	 $progressNoteURL = $billehrUploadPath.$progressNoteRow['URL'];
+    if(isset($progressNoteRow) && !empty($progressNoteRow)){
+        $progressNoteURL = $billehrUploadPath.$progressNoteRow['URL'];
 	 
-	 ?>
+?>
 	 
 <a href="<?php echo $progressNoteURL ?>" style="font-weight:bold" >
 <?php echo htmlspecialchars(xl('billEHR Progress Note'),ENT_NOQUOTES); ?></a>
 <span>|</span>
 
 <?php
-	 
- }
- else{
-	 $progressNoteURL ='';
- }
- 
+    }
+    else{
+        $progressNoteURL = '';
+    }
+?>
+
+<?php
+
+    //pacEHR Prgoress Note View code by Gangeya
+    $pacehrProgressNoteResult = sqlStatement("SELECT pmsencounterID, URL 
+    FROM pacehrprogressnotes WHERE pmsencounterID = $encounter and isActive= 1 ORDER BY progressnoteID DESC LIMIT 1");
+
+    $pacehrprogressNoteRow = sqlFetchArray($pacehrProgressNoteResult);
+    //print_r($pacehrprogressNoteRow);
+
+    if(isset($pacehrprogressNoteRow) && !empty($pacehrprogressNoteRow)){
+        $pacehrprogressNoteURL = $pacehrUploadPath.$pacehrprogressNoteRow['URL'];
+?>
+<a href = "<?php echo $pacehrprogressNoteURL ?>" style = "font-weight:bold" >
+<?php echo htmlspecialchars(xl('pacEHR Progress Note'),ENT_NOQUOTES); ?></a>
+<span>|</span>
+
+<?php
+    }
+    else{
+        $pacehrprogressNoteURL = '';
+    }
 
 ?>
+
 <a href="upload_pn.php" onclick='top.restoreSession()' style="font-weight:bold" >
 <?php echo htmlspecialchars(xl('payEHR Progress Note'),ENT_NOQUOTES); ?></a>
 
