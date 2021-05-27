@@ -1125,8 +1125,9 @@ $progressNoteRow = sqlFetchArray($progressNoteResult);
 <?php
 
     //pacEHR Prgoress Note View code by Gangeya
-    $pacehrProgressNoteResult = sqlStatement("SELECT pmsencounterID, URL 
-    FROM pacehrprogressnotes WHERE pmsencounterID = $encounter and isActive= 1 ORDER BY progressnoteID DESC LIMIT 1");
+    $sql = "select pmsencounterID, URL from pacehrprogressnotes where pmsencounterID = $encounter and isActive= 1 order by progressnoteID desc limit 1";
+
+    $pacehrProgressNoteResult = sqlStatement($sql);
 
     $pacehrprogressNoteRow = sqlFetchArray($pacehrProgressNoteResult);
     //print_r($pacehrprogressNoteRow);
