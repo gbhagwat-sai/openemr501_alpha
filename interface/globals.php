@@ -663,5 +663,7 @@ else{
 }
 //$client = $_SESSION['site_id'];	
 $billehrUploadPath = "https://billehr.blob.core.windows.net/".$client."/";
+
+$pacehrUploadPath = "https://pacehr.blob.core.windows.net/pacehrprod/";
 // Sai custom code end
 ?>
