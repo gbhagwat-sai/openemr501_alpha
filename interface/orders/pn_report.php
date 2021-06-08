@@ -24,16 +24,17 @@ function thisLineItem($row) {
 
   if ($_POST['form_csvexport']) 
   {
-      echo '"' . addslashes($row['PID' ]) . '",';
+      echo '"' . addslashes($row['PatientID' ]) . '",';
       echo '"' . addslashes($row['ExternalID' ]) . '",';
       echo '"' . addslashes($row['PatientName' ]) . '",';
-      echo '"' . addslashes($row['Encounter' ]) . '",';
+      echo '"' . addslashes($row['EncounterID' ]) . '",';
       echo '"' . addslashes(oeFormatShortDate($row['DOS' ])) . '",';
       echo '"' . addslashes($row['CPT' ]) . '",';
       echo '"' . addslashes($row['Provider' ]) . '",';
       echo '"' . addslashes($row['Facility' ]). '",';
-      echo '"' . addslashes(oeFormatShortDate($row['NoteUploadedDate'  ])) . '",';
-      echo '"' . addslashes($row['NoteUploadedBy' ]). '"' . "\n";
+      echo '"' . addslashes(oeFormatShortDate($row['UploadedDate'  ])) . '",';
+      echo '"' . addslashes($row['UploadedBy' ]) . '",';
+      echo '"' . addslashes($row['Source' ]). '"' . "\n";
    
  /* echo '"' . addslashes($row['NoteCount' ]) . '",';
     echo '"' . addslashes($row['RejectedNoteCount' ]) . '",';
@@ -57,6 +58,7 @@ function thisLineItem($row) {
   <td class="detail"><?php echo $row['Facility' ]; ?></td>
   <td class="detail"><?php echo oeFormatShortDate($row['UploadedDate'  ]); ?></td>
   <td class="detail"><?php echo $row['UploadedBy' ]; ?></td>
+  <td class="detail"><?php echo $row['Source' ]; ?></td>
  </tr>
 <?php
   } // End not csv export
@@ -86,7 +88,8 @@ if ($_POST['form_csvexport']) {
   echo '"' . xl('Provider') . '",';
   echo '"' . xl('Facility') . '",';
   echo '"' . xl('UploadedDate') . '",';
-  echo '"' . xl('UploadedBy') . '"' . "\n";
+  echo '"' . xl('UploadedBy') . '",';
+  echo '"' . xl('Source') . '"' . "\n";
 
 }
 else { // not export
@@ -149,6 +152,7 @@ else { // not export
 	  <td class="dehead"><?php xl('Facility','e'  ) ?></td>
 	  <td class="dehead"><?php xl('UploadedDate','e'  ) ?></td>
 	  <td class="dehead"><?php xl('UploadedBy','e'  ) ?></td>
+	  <td class="dehead"><?php xl('Source','e'  ) ?></td>
  </tr>
 <?php
 } // end not export
@@ -165,7 +169,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $query = "select pmsPatientID as PatientID, pd.pubpid as ExternalID, Concat(pd.lname, ' ', pd.fname, ' ', pd.mname) AS PatientName,
 			fe.encounter as EncounterID, DATE(fe.date) as DOS,
 			group_concat(b.code) as CPT, Concat(u.lname, ' ', u.fname, ' ', u.mname) AS Provider, fe.facility as Facility,
-			date(pn.createdDate) As UploadedDate, Concat(u2.lname, ' ', u2.fname, ' ', u2.mname) AS UploadedBy
+			date(pn.createdDate) As UploadedDate, Concat(u2.lname, ' ', u2.fname, ' ', u2.mname) AS UploadedBy, pn.source as Source
 			from progressnotes pn
 			join patient_data pd on pn.pmsPatientID = pd.pid
 			join form_encounter fe on fe.billEHREncounterID = pn.encounterID
@@ -174,7 +178,21 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
 			left join users u2 on u2.id = pn.createdBy
 			where (pn.createdDate between '$form_from_date 00:00:00' and '$form_to_date 23:59:59')
 			and pn.isActive = 1 and b.code_type = 'CPT4'
-			group by b.encounter";
+			group by b.encounter
+			UNION
+			select pmsPatientID as PatientID, pd.pubpid as ExternalID, Concat(pd.lname, ' ', pd.fname, ' ', pd.mname) AS PatientName,
+			fe.encounter as EncounterID, DATE(fe.date) as DOS,
+			group_concat(b.code) as CPT, Concat(u.lname, ' ', u.fname, ' ', u.mname) AS Provider, fe.facility as Facility,
+			date(pn.createdDate) As UploadedDate, Concat(u2.lname, ' ', u2.fname, ' ', u2.mname) AS UploadedBy, pn.source as Source
+			from pacehrprogressnotes pn
+			join patient_data pd on pn.pmsPatientID = pd.pid
+			join form_encounter fe on fe.encounter = pn.pmsencounterID
+			join billing b on b.encounter = fe.encounter
+			join users u on u.id = fe.provider_id
+			left join users u2 on u2.id = pn.createdBy
+			where (pn.createdDate between '$form_from_date 00:00:00' and '$form_to_date 23:59:59')
+			and pn.isActive = 1 and b.code_type = 'CPT4'";
+			
   $res = sqlStatement($query);
   
   while ($row = sqlFetchArray($res)) {
