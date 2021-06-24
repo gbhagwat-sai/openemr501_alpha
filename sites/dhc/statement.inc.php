@@ -472,8 +472,7 @@ order by post_date desc limit 1");
 				//$i= $j;
 				$line_detail = $final_lines[$j];
 				$line_count = count($line_detail);
-				//echo "<pre>";
-				
+				//echo "<pre>";				
 				//print_r($line_detail);
 				//echo $line_count;
 				

@@ -238,7 +238,10 @@ font-weight:bold;}
                             </div>
                         </tr>
                         
-                        <tr><div [payment_style] class="payment_style"><td colspan="5">Card Number</td></div></tr>
+                        <tr><div [payment_style] class="payment_style">
+                            <td colspan="3">Card Number</td>
+                            <td colspan="2">[total_due]</td>
+                        </div></tr>
                        
                         
                         <tr>
@@ -253,8 +256,8 @@ font-weight:bold;}
                         
                         <tr>
                         	<td colspan="1">[statement_date]</td>
-                            <td colspan="1">ACCT [account_no]</td>
-                            <td colspan="3" class="watermark">Authorized Signature</td>
+                            <td colspan="2">ACCT [account_no]</td>
+                            <td colspan="2" class="watermark">Authorized Signature</td>
                             
                         </tr>
                         

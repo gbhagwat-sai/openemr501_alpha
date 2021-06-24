@@ -365,7 +365,7 @@ if ($RowSearch = sqlFetchArray($ResultSearchNew)) {
     echo htmlspecialchars(xl('Adj code'), ENT_QUOTES);
 ?></td>
                 <td width="60" class="left top" ><?php
-    echo htmlspecialchars(xl('Mannual Adj Code'), ENT_QUOTES);
+    echo htmlspecialchars(xl('MSP Code'), ENT_QUOTES);
 ?></td>
                 <td width="100" class="left top" ><?php
     echo htmlspecialchars(xl('Status'), ENT_QUOTES);

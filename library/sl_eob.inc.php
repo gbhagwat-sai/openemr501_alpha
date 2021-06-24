@@ -136,8 +136,11 @@ function arPostSession($payer_id, $check_number, $check_date, $pay_total, $post_
         $sessionId=sqlInsert($query);
  // Sai custom code start  
  //By Gangeya 
- $highest_id = mysql_result(sql_statement("select MAX(session_id) from ar_session"), 0);
-  
+ //$highest_id = mysql_result(mysql_query("select MAX(session_id) from ar_session"), 0);
+  //echo "select MAX(session_id) from ar_session";
+  $result = mysqli_query("select session_id from ar_session order by session_id desc limit 1");
+  $highest_id = mysqli_fetch_assoc($result);
+
  return $sessionId;
  // Sai custom code end  
     }

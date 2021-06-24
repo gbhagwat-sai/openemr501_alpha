@@ -1971,26 +1971,12 @@ if(dateVal > currentDate)
 }
 
 function submitme() {
+	window.onbeforeunload = null;
  var f = document.forms[0];
  if (validate(f)) {
   top.restoreSession();
   f.submit();
  }
-}
-// Sai custom code start
-document.onkeydown = function(evt) 
-{
-    masterkeypress(evt);
-	evt = evt || window.event; // because of Internet Explorer quirks...
-	k = evt.which || evt.charCode || evt.keyCode; // because of browser differences...	
-	if (k == 83 && evt.altKey && evt.ctrlKey && !evt.shiftKey) 
-	{
-		 submitme();
-	}
-	if (k == 115 && evt.altKey && evt.ctrlKey && !evt.shiftKey) 
-	{
-		 submitme();
-	}
 }
 
 // Onkeyup handler for policy number.  Allows only A-Z and 0-9.
@@ -2688,10 +2674,10 @@ $("#form_ss").live('blur',function() {
 	});
 	</script>
     
-	<script type="text/javascript" src="../../../library/js/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery-ui-1.10.js"></script>
+	<!-- <script type="text/javascript" src="../../../library/js/jquery-1.9.1.js"></script> -->
+<!-- <script type="text/javascript" src="../../../library/js/jquery-ui-1.10.js"></script> -->
 
-<link rel="stylesheet" type="text/css" href="../../../library/js/jquery-ui.css" media="screen" />
+<!-- <link rel="stylesheet" type="text/css" href="../../../library/js/jquery-ui.css" media="screen" /> -->
 
 	<script>
 $(document).ready(function(){

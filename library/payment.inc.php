@@ -458,21 +458,18 @@ function DistributionInsert($CountRow, $created_time, $user_id)
 	{
 		$row= sqlFetchArray(sqlStatement("select provider from insurance_data where pid=".$patient_id." and type='secondary'"));
 		$provider= $row['provider'];
-		
 	}
 	if($payer_type == 2)
 	{
 		$row= sqlFetchArray(sqlStatement("select provider from insurance_data where pid=".$patient_id." and type='tertiary'"));
 		$provider= $row['provider'];
-		
-	}
+    }
 	if($payer_type == 3)
 	{
 		$provider = 0;
 	}
-	
-	
-	if($pay == $fees)
+    
+    if($pay == $fees)
 	{
 		$status="Claim settled";
 		

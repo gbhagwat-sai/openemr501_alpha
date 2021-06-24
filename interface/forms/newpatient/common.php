@@ -428,7 +428,7 @@ if(price_str == ''){
 	}	
 	 if(price_str != '' && units_str!=''){
 		total = (price_str) * (units_str);		
-		document.getElementById(str2).value=total;
+		document.getElementById(str2).value=total.toFixed(2);
 	}
 	
  }

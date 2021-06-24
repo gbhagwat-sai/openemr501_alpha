@@ -47,8 +47,8 @@ require_once("$srcdir/payment.inc.php");
 //===============================================================================
 
 use OpenEMR\Core\Header;
-print_r($_POST);
-die;
+//print_r($_POST);
+//die;
 if (isset($_POST["mode"])) {
     if ($_POST["mode"] == "DeletePaymentDistribution") {
         $DeletePaymentDistributionId=trim(formData('DeletePaymentDistributionId'));

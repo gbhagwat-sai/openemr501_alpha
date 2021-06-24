@@ -116,14 +116,16 @@ function ar_get_invoice_summary($patient_id, $encounter_id, $with_detail = false
 	// Get payments and adjustments. (includes copays)
 	$res = sqlStatement("SELECT " .
 	"a.code_type, a.code, a.modifier, a.memo, a.payer_type, a.adj_amount,a.w_o, a.pay_amount, a.reason_code, " .
-	"a.post_time, a.session_id, a.sequence_no, a.account_code, " .
+	"concat('{',option_id,'} - ',title) as title, a.post_time, a.session_id, a.sequence_no, a.account_code, " .
 	"s.payer_id, s.reference, s.check_date, s.deposit_date " .
 	",i.name " .
 	"FROM ar_activity AS a " .
 	"LEFT OUTER JOIN ar_session AS s ON s.session_id = a.session_id " .
 	"LEFT OUTER JOIN insurance_companies AS i ON i.id = s.payer_id " .
+	"LEFT JOIN list_options as lo on lo.option_id = a.reason_code and list_id = 'msp_remit_codes'" .
 	"WHERE a.pid = ? AND a.encounter = ? AND a.code!='claim'" . 
 	"ORDER BY s.check_date, a.sequence_no", array($patient_id,$encounter_id));
+
 	while ($row = sqlFetchArray($res)) {
 		// sai custom code start
 		//below by sangram for Bug 8559	
@@ -132,8 +134,13 @@ function ar_get_invoice_summary($patient_id, $encounter_id, $with_detail = false
 			$checkres = sqlStatement("SELECT EXISTS(SELECT * FROM ar_activity WHERE encounter=$encounter_id and code='claim') as claim_exist");
 			$checkrow = sqlFetchArray($checkres);
 			if($checkrow['claim_exist'])
-			{
-				$claim_memo=$row['memo'];
+			{	
+				if($row['memo'] != '' || isset($row['memo']) || !empty($row['memo'])){
+					$claim_memo = $row['memo'];
+				}
+				else{
+					$claim_memo = $row['title'];
+				}
 				$claim_payment_res = sqlStatement("select pay_amount from ar_activity where code='claim' and pay_amount<0 and encounter=$encounter_id and payer_type=2 and memo='$claim_memo' ");
 				$claim_payment_row = sqlFetchArray($claim_payment_res);
 				$row['pay_amount']+=$claim_payment_row['pay_amount'];
@@ -215,7 +222,10 @@ function ar_get_invoice_summary($patient_id, $encounter_id, $with_detail = false
 			if ($row['adj_amount'] != 0 || $row['pay_amount'] >= 0) { // sai custom code 
 				$tmp['chg'] = 0 - $row['adj_amount'];
 				// $tmp['rsn'] = (empty($row['memo']) || empty($row['session_id'])) ? 'Unknown adjustment' : $row['memo'];
-				$tmp['rsn'] = empty($row['memo']) ? 'Unknown adjustment' : $row['memo'];
+				//Commented by Gangeya to test 945
+				//$tmp['rsn'] = empty($row['memo']) ? 'Unknown adjustment' : $row['memo'];
+				//code added to fethc MSP reason code from List Options.
+				$tmp['rsn'] = empty($row['memo']) ? $row['title'] : $row['memo'];
 				$tmpkey = $paydate . $keysuff1++;
 				} else {
 				$tmpkey = $paydate . $keysuff2++;
@@ -304,12 +314,13 @@ function get_invoice_encounter_list_status($patient_id,$encounter_id,$status,$wi
 	
 	$res = sqlStatement("SELECT " .
 	"a.code, a.modifier, a.memo, a.payer_type, a.adj_amount, a.pay_amount, a.reason_code, " .
-	"a.post_time, a.session_id, a.sequence_no,a.w_o, " .
+	"concat('{',option_id,'} - ',title) as title, a.post_time, a.session_id, a.sequence_no,a.w_o, " .
 	"s.payer_id, s.reference, s.check_date, s.deposit_date " .
 	",i.name " .
 	"FROM ar_activity AS a " .
 	"LEFT OUTER JOIN ar_session AS s ON s.session_id = a.session_id " .
 	"LEFT OUTER JOIN insurance_companies AS i ON i.id = s.payer_id " .
+	"LEFT JOIN list_options as lo on lo.option_id = a.reason_code and list_id = 'msp_remit_codes'" .
 	"WHERE a.pid = ? AND a.encounter = ? AND a.code!='claim'" .
 	"ORDER BY s.check_date, a.sequence_no", array($patient_id,$encounter_id) );
 	
@@ -384,7 +395,12 @@ function get_invoice_encounter_list_status($patient_id,$encounter_id,$status,$wi
 			if ($row['adj_amount'] != 0 || $row['pay_amount'] >= 0) {
 				$tmp['chg'] = 0 - $row['adj_amount'];
 				// $tmp['rsn'] = (empty($row['memo']) || empty($row['session_id'])) ? 'Unknown adjustment' : $row['memo'];
-				$tmp['rsn'] = empty($row['memo']) ? 'Unknown adjustment' : $row['memo'];
+
+				//Commented by Gangeya to test 945
+				//$tmp['rsn'] = empty($row['memo']) ? 'Unknown adjustment' : $row['memo'];
+				//code added to fethc MSP reason code from List Options.
+				$tmp['rsn'] = empty($row['memo']) ? $row['title'] : $row['memo'];
+
 				$tmpkey = $paydate . $keysuff1++;
 			}
 			else {

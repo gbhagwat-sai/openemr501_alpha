@@ -194,22 +194,41 @@ function generate_select_list(
     }
 
     $got_selected = false;
-
-    while ($lrow = sqlFetchArray($lres)) {
-        $selectedValues = explode("|", $currvalue);
-
-        $optionValue = attr($lrow ['option_id']);
-        $s .= "<option value='$optionValue'";
-
-        if ((strlen($currvalue) == 0 && $lrow ['is_default']) || (strlen($currvalue) > 0 && in_array($lrow ['option_id'], $selectedValues))) {
-            $s .= " selected";
-            $got_selected = true;
+    if($list_id == 'msp_remit_codes'){
+        while ($lrow = sqlFetchArray($lres)) {
+            $selectedValues = explode("|", $currvalue);
+    
+            $optionValue = attr($lrow ['option_id']);
+            $s .= "<option value='$optionValue'";
+    
+            if ((strlen($currvalue) == 0 && $lrow ['is_default']) || (strlen($currvalue) > 0 && in_array($lrow ['option_id'], $selectedValues))) {
+                $s .= " selected";
+                $got_selected = true;
+            }
+    
+            // Already has been translated above (if applicable), so do not need to use
+            // the xl_list_label() function here
+            $optionLabel = text($lrow ['option_id']);
+            $s .= ">$optionLabel</option>\n";
         }
-
-        // Already has been translated above (if applicable), so do not need to use
-        // the xl_list_label() function here
-        $optionLabel = text($lrow ['title']);
-        $s .= ">$optionLabel</option>\n";
+    }
+    else{
+        while ($lrow = sqlFetchArray($lres)) {
+            $selectedValues = explode("|", $currvalue);
+    
+            $optionValue = attr($lrow ['option_id']);
+            $s .= "<option value='$optionValue'";
+    
+            if ((strlen($currvalue) == 0 && $lrow ['is_default']) || (strlen($currvalue) > 0 && in_array($lrow ['option_id'], $selectedValues))) {
+                $s .= " selected";
+                $got_selected = true;
+            }
+    
+            // Already has been translated above (if applicable), so do not need to use
+            // the xl_list_label() function here
+            $optionLabel = text($lrow ['title']);
+            $s .= ">$optionLabel</option>\n";
+        }
     }
 
     /*
